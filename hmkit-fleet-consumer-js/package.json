@@ -1,0 +1,12 @@
+{
+  "name": "hmkit-fleet-consumer-js",
+  "type": "module",
+  "dependencies": {
+    "hmkit-fleet": "../build/js/packages/hmkit-fleet-mp-hmkit-fleet"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

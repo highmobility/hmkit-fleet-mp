@@ -1,0 +1,8 @@
+.gradle
+.idea
+.vscode
+build
+private-key.json
+.yarn
+node_modules
+.DS_Store

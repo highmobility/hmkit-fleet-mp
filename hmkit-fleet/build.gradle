@@ -1,0 +1,82 @@
+buildscript {
+    ext {
+        kotlin_version = "1.9.0"
+        coroutinesVersion = '1.7.3'
+        koinVersion = '3.4.3'
+        ktor_version = '2.3.3'
+
+        depLocation = 0
+    }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform' version "$kotlin_version"
+}
+
+group = 'com.highmobility'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+kotlin {
+    jvm {
+        withJava()
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
+
+        kotlin {
+            jvmToolchain {
+                languageVersion.set(JavaLanguageVersion.of(8))
+            }
+        }
+
+    }
+    js {
+        useEsModules()
+        nodejs {
+
+        }
+        binaries.library()
+        generateTypeScriptDefinitions()
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+                implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0-RC'
+                implementation "io.insert-koin:koin-core:$koinVersion"
+                implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
+
+                implementation("io.ktor:ktor-client-core:$ktor_version")
+
+            }
+        }
+        commonTest {
+//            testImplementation 'org.jetbrains.kotlin:kotlin-test-common'
+        }
+        jvmMain {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion"
+                implementation "io.ktor:ktor-client-okhttp:$ktor_version"
+            }
+        }
+        jvmTest {
+
+        }
+        jsMain {
+            dependencies {
+//                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutinesVersion"
+                // ktor engine
+                implementation("io.ktor:ktor-client-js:$ktor_version")
+            }
+
+        }
+        jsTest {
+
+        }
+    }
+}
