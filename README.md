@@ -1,4 +1,32 @@
-## build java/js libs
+<!-- TOC -->
+
+* [Current status](#current-status)
+* [build/run java/js targets](#buildrun-javajs-targets)
+    * [run js](#run-js)
+    * [run jvm](#run-jvm)
+    * [native](#native)
+* [positives](#positives)
+* [negatives](#negatives)
+* [debugging crashes](#debugging-crashes)
+    * [js stack trace](#js-stack-trace)
+    * [js debugger](#js-debugger)
+    * [java stack trace](#java-stack-trace)
+    * [java debugging](#java-debugging)
+    * [issues](#issues)
+
+<!-- TOC -->
+
+## Current status
+
+jvm and js targets working with `getEligibility` request.
+It creates jwt and gets auth token with it. Then it uses the token in getEligibility request.
+
+- jvm crypto - hmcrypto-java
+- js crypto - jsrsasign
+
+Next request implementations are trivial because crypto and auth is the hardest part.
+
+## build/run java/js targets
 
 ### run js
 
@@ -6,8 +34,21 @@ build and run js:
 
 `./gradlew assemble && cd hmkit-fleet-consumer-js && yarn && tsx ./src/index.ts && cd -`
 
+continuous building - don't have to manually build on every change
+
+`./gradle assemble --continuous`
+in js folder: `yarn && tsx ./src/index.ts`
+
 - js will be located in `build/dist/js/productionLibrary/`
 - java will be located in `build/libs/`
+
+### run jvm
+
+`./gradlew :consumer-jvm:run `
+
+### native
+
+currently not implemented
 
 ## positives
 
@@ -52,44 +93,36 @@ check out generated types in [docs](./docs/hmkit-fleet-hmkit-fleet.d.ts)
 
 ```
 ➜ node index.js
-file:///Users/tonis/workspace/java/hmkit-fleet-mp/hmkit-fleet-consumer-js/node_modules/hmkit-fleet/kotlinx-serialization-kotlinx-serialization-json.mjs:4748
-  $l$loop: while (this.i3e_1 < source.length) {
-                                      ^
-
-TypeError: Cannot read properties of undefined (reading 'length')
-   ...
-    at ServiceAccountApiConfiguration_init_$Create$ (file:///Users/tonis/workspace/java/hmkit-fleet-mp/hmkit-fleet-consumer-js/node_modules/hmkit-fleet/hmkit-fleet-hmkit-fleet.mjs:539:10)
-    at file:///Users/tonis/workspace/java/hmkit-fleet-mp/hmkit-fleet-consumer-js/node_modules/hmkit-fleet/hmkit-fleet-hmkit-fleet.mjs:367:25
+  throw SerializationException_init_$Create$(notRegisteredMessage(_this__u8e3s4) + 'To get enum serializer on Kotlin/JS, it should be annotated with @Serializable annotation.');
+        ^
+SerializationException: Serializer for class 'Brand' is not found.
+Please ensure that class is marked as '@Serializable' and that the serialization compiler plugin is applied.
+To get enum serializer on Kotlin/JS, it should be annotated with @Serializable annotation.
+    at platformSpecificSerializerNotRegistered (/opt/buildAgent/work/b2fef8360e1bcf3d/core/jsMain/src/kotlinx/serialization/internal/Platform.kt:45:11)
+    at serializer (/opt/buildAgent/work/b2fef8360e1bcf3d/core/commonMain/src/kotlinx/serialization/Serializers.kt:134:10)
+    at requestBody (/opt/buildAgent/work/b2fef8360e1bcf3d/core/commonMain/src/kotlinx/serialization/internal/Platform.common.kt:80:1)
+    at $getEligibilityCOROUTINE$0.protoOf.hh (/Users/tonis/workspace/src/commonMain/kotlin/network/UtilityRequests.kt:49:20)
 ```
 
-this leads to Kotlin compiled js:
-
-```javascript
-function Koin$koinModules$lambda($configuration, $hmKitConfiguration, $environment) {
-  return function ($this$module) {
-L367    var configuration = ServiceAccountApiConfiguration_init_$Create$($configuration);
-        var tmp$ret$2;
-        // Inline function 'org.koin.core.module.Module.single' call
-        var tmp0_single = Koin$koinModules$lambda$lambda($hmKitConfiguration);
-        var tmp$ret$1;
-        // Inline function 'org.koin.core.module._singleInstanceFactory' call
-        var tmp0__singleInstanceFactory = Companion_getInstance_0().p3q_1;
-```
-
-The code is not clean, but it is readable and directs to the problem (ServiceAccoutApiConfiguration.kt init)
+It shows the Kotlin line where the exception was thrown(`UtilityRequests.kt:49:20`). Not problematic to debug.
 
 ### js debugger
 
-TODO
+node js: they recommend normal node
+debugging: https://nodejs.org/en/docs/guides/debugging-getting-started#jetbrains-webstorm-2017-1-and-other-jetbrains-ides
+
+The mjs source code for this is not clean, but it is kind of readable
+![img](docs/js-debugging.png)
 
 ### java stack trace
 
-TODO:
+The java compiled version looks exactly like the current one. I think there won't be any difference for the clients.
+
+TODO: verify. also verify package is correct (for spring targets that require a package)
 
 ### java debugging
 
-TODO:
-
+TODO: fix debugging. Try to share the jvm lib and verify can debug like before.
 
 ### issues
 

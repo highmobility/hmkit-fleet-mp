@@ -1,6 +1,6 @@
 {
   "name": "hmkit-fleet-consumer-js",
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "hmkit-fleet": "../build/js/packages/hmkit-fleet-mp-hmkit-fleet"
   },

@@ -23,53 +23,47 @@
  */
 package com.highmobility.hmkitfleet
 
-//import com.highmobility.crypto.value.PrivateKey
+import com.benasher44.uuid.uuid4
+import kotlinx.datetime.Clock
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.serializer
-
-//import java.util.*
 
 /**
  * Decode the service account private key from JSON.
  */
 @Serializable
 class ServiceAccountApiConfiguration {
-    @SerialName("private_key")
-    private val serviceAccountPrivateKey: String
+  @SerialName("private_key")
+  val serviceAccountPrivateKey: String
 
-    @SerialName("id")
-    val serviceAccountPrivateKeyId: String
+  @SerialName("id")
+  val serviceAccountPrivateKeyId: String
 
-    constructor(privateKeyJson: String) {
-        val json = Json.decodeFromString<JsonObject>(privateKeyJson)
+  constructor(privateKeyJson: String) {
+    val json = Json.decodeFromString<JsonObject>(privateKeyJson)
 
-        // PKCS 8 format
-        serviceAccountPrivateKey = json["private_key"]!!.jsonPrimitive.content
-        serviceAccountPrivateKeyId = json["id"]!!.jsonPrimitive.content
+    // PKCS 8 format
+    serviceAccountPrivateKey = json["private_key"]!!.jsonPrimitive.content
+    serviceAccountPrivateKeyId = json["id"]!!.jsonPrimitive.content
+  }
+
+  val version = 2
+
+  internal fun createJti() = uuid4().toString()
+  internal fun createIat() = Clock.System.now().epochSeconds
+
+  fun toJsonString(): String {
+    return Json.encodeToString(serializer(), this)
+  }
+
+  companion object {
+    private val json = Json { ignoreUnknownKeys = true }
+
+    fun fromJson(json: String): ServiceAccountApiConfiguration {
+      return this.json.decodeFromString(serializer(), json)
     }
-
-    val version = 2
-
-//    internal fun createJti() = UUID.randomUUID().toString()
-//    internal fun createIat() = (System.currentTimeMillis() / 1000)
-//
-//    internal fun getServiceAccountHmPrivateKey(): PrivateKey {
-//        return PrivateKey(serviceAccountPrivateKey, PrivateKey.Format.PKCS8)
-//    }
-//
-//    fun toJsonString(): String {
-//        return Json.encodeToString(serializer(), this)
-//    }
-
-    companion object {
-        private val json = Json { ignoreUnknownKeys = true }
-
-        fun fromJson(json: String): ServiceAccountApiConfiguration {
-            return this.json.decodeFromString(serializer(), json)
-        }
-    }
+  }
 }

@@ -24,7 +24,7 @@
 package com.highmobility.hmkitfleet
 
 //import com.highmobility.crypto.Crypto
-import Environment
+import com.highmobility.hmkitfleet.model.Environment
 import com.highmobility.hmkitfleet.network.AuthTokenRequests
 import com.highmobility.hmkitfleet.network.UtilityRequests
 //import com.highmobility.hmkitfleet.network.AuthTokenRequests
@@ -38,40 +38,41 @@ import org.koin.core.Koin
 import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
+import platform.Crypto
 
 //import org.slf4j.LoggerFactory
 
 internal class Koin(
-    configuration: String,
-    environment: Environment,
-    hmKitConfiguration: HMKitConfiguration
+  configuration: String,
+  environment: Environment,
+  hmKitConfiguration: HMKitConfiguration = HMKitConfiguration.defaultConfiguration()
 ) {
-    private val koinModules = module {
-        val configuration = ServiceAccountApiConfiguration(configuration)
+  private val koinModules = module {
+    val configuration = ServiceAccountApiConfiguration(configuration)
 //        single { LoggerFactory.getLogger(HMKitFleet::class.java) }
-        single { hmKitConfiguration.client }
-        single { environment }
-//        single { Crypto() }
-        single { Requests(get(), environment.url) }
-        single { Cache() }
-        single {
-            AuthTokenRequests(
-                get(),
-                get(),
-                environment.url,
-                configuration,
-                get()
-            )
-        }
+    single { hmKitConfiguration.client }
+    single { environment }
+    single { Crypto() }
+    single { Requests(get(), environment.url) }
+    single { Cache() }
+    single {
+      AuthTokenRequests(
+        get(),
+        get(),
+        environment.url,
+        configuration,
+        get()
+      )
+    }
 //        single { ClearanceRequests(get(), get(), environment.url, get()) }
 
-        single {
-            UtilityRequests(
-                get(),
-                environment.url,
-                get()
-            )
-        }
+    single {
+      UtilityRequests(
+        get(),
+        environment.url,
+        get()
+      )
+    }
 //        single {
 //            VehicleDataRequests(
 //                get(),
@@ -81,16 +82,16 @@ internal class Koin(
 //            )
 //        }
 
-        single { CoroutineScope(Dispatchers.Default) }
+    single { CoroutineScope(Dispatchers.Default) }
+  }
+
+  private lateinit var koinApplication: KoinApplication
+
+  fun start(): Koin {
+    koinApplication = koinApplication {
+      modules(koinModules)
     }
 
-    private lateinit var koinApplication: KoinApplication
-
-    fun start(): Koin {
-        koinApplication = koinApplication {
-            modules(koinModules)
-        }
-
-        return koinApplication.koin
-    }
+    return koinApplication.koin
+  }
 }

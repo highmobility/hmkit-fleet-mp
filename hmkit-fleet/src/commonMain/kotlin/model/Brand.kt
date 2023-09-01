@@ -1,11 +1,12 @@
-
 package com.highmobility.hmkitfleet.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.jvm.JvmName
 
+@OptIn(ExperimentalJsExport::class)
 @JsExport
 @Serializable
 enum class Brand {

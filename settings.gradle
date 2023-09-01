@@ -1,6 +1,4 @@
 rootProject.name = 'hmkit-fleet-mp'
 
-
-include /*':hmkit-fleet-consumer',*/ ":hmkit-fleet"
-
-//project(':hmkit-fleet-consumer').projectDir = new File('hmkit-fleet-consumer/hmkit-fleet-consumer')
+include ":hmkit-fleet",
+        ":consumer-jvm"

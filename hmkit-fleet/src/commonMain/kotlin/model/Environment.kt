@@ -1,3 +1,5 @@
+package com.highmobility.hmkitfleet.model
+
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 import kotlin.jvm.JvmField

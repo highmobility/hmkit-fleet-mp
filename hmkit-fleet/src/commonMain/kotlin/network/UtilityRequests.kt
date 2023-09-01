@@ -29,59 +29,54 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.*
-import org.koin.core.logger.Logger
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.put
 
 internal class UtilityRequests(
-    client: HttpClient,
-    baseUrl: String,
-    private val authTokenRequests: AuthTokenRequests
+  client: HttpClient,
+  baseUrl: String,
+  private val authTokenRequests: AuthTokenRequests
 ) : Requests(
-    client,
-    baseUrl
+  client,
+  baseUrl
 ) {
-    suspend fun getEligibility(
-        vin: String,
-        brand: Brand
-    ): Response<EligibilityStatus> {
-        val body = requestBody(vin, brand)
-        val authToken = authTokenRequests.getAuthToken()
+  suspend fun getEligibility(
+    vin: String,
+    brand: Brand
+  ): Response<EligibilityStatus> {
+    val body = requestBody(vin, brand)
+    val authToken = authTokenRequests.getAuthToken()
 
-        if (authToken.error != null) return Response(null, authToken.error)
+    if (authToken.error != null) return Response(null, authToken.error)
 
-//        val request = Request.Builder()
-//            .url("$baseUrl/eligibility")
-//            .header("Content-Type", "application/json")
-//            .header("Authorization", "Bearer ${authToken.response?.authToken}")
-//            .post(body)
-//            .build()
+    val headers = mapOf(
+      contentType.first to contentType.second,
+      "Authorization" to "Bearer ${authToken.response?.authToken}"
+    )
 
-//        printRequest(request)
-
-        val response = client.post("$baseUrl/eligibility") {
-            header("Content-Type", "application/json")
-            header("Authorization", "Bearer ${authToken.response?.authToken}")
-            setBody(body)
-        }
-
-        return tryParseResponse(response, 200) { responseBody ->
-            val eligibilityStatus = Json.decodeFromString<EligibilityStatus>(responseBody)
-            if (eligibilityStatus.vin != vin) println("VIN in response does not match VIN in request")
-            Response(eligibilityStatus, null)
-        }
+    val response = client.post("$baseUrl/eligibility") {
+      headers.forEach { (key, value) -> header(key, value) }
+      setBody(body)
     }
 
-    private fun requestBody(
-        vin: String,
-        brand: Brand,
-    ): String {
-        val vehicle = buildJsonObject {
-            put("vin", vin)
-            put("brand", Json.encodeToJsonElement(brand))
-        }
-
-        return vehicle.toString()
+    return tryParseResponse(response, 200) { responseBody ->
+      val eligibilityStatus = Json.decodeFromString<EligibilityStatus>(responseBody)
+      if (eligibilityStatus.vin != vin) println("VIN in response does not match VIN in request")
+      Response(eligibilityStatus, null)
     }
+  }
+
+  private fun requestBody(
+    vin: String,
+    brand: Brand,
+  ): String {
+    val vehicle = buildJsonObject {
+      put("vin", vin)
+      put("brand", Json.encodeToJsonElement(brand))
+    }
+
+    return vehicle.toString()
+  }
 }

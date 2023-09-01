@@ -153,14 +153,22 @@ __metadata:
 
 "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet::locator=hmkit-fleet-consumer-js%40workspace%3A.":
   version: 1.0.0-SNAPSHOT
-  resolution: "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet#../build/js/packages/hmkit-fleet-mp-hmkit-fleet::hash=b8b330&locator=hmkit-fleet-consumer-js%40workspace%3A."
+  resolution: "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet#../build/js/packages/hmkit-fleet-mp-hmkit-fleet::hash=dacda1&locator=hmkit-fleet-consumer-js%40workspace%3A."
   dependencies:
     "@js-joda/core": 3.2.0
     abort-controller: 3.0.0
     format-util: ^1.0.5
+    jsrsasign: 10.8.6
     node-fetch: 2.6.7
     ws: 8.5.0
-  checksum: baa2f60d116b830777e67dfaceebeba30e46a7b44e3773b39754c23e164e51904793a6ae636cdbb1a22bfe72f796a5a39a87302306fbf156b367be76cef565eb
+  checksum: 59f4efb529dfcf5e44b77b9882638896e1f9595b50a6adb263eb6658e14b4686c91cc2361ee99c1445e961ee14be9fe8f564935626c1ab7afbf9e9dda97785cc
+  languageName: node
+  linkType: hard
+
+"jsrsasign@npm:10.8.6":
+  version: 10.8.6
+  resolution: "jsrsasign@npm:10.8.6"
+  checksum: 726e6a46af802a17845348962261924b6b2c1138858cfd1a56c5e2918c8c7ebc50e7ae794bfabe12e47edec661a794fd0631ad8c78b83de4fb4d6aea53c144cf
   languageName: node
   linkType: hard
 

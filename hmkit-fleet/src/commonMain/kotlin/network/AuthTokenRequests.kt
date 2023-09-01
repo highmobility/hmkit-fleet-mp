@@ -26,63 +26,68 @@ package com.highmobility.hmkitfleet.network
 import com.highmobility.hmkitfleet.ServiceAccountApiConfiguration
 import com.highmobility.hmkitfleet.model.AuthToken
 import io.ktor.client.HttpClient
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.readText
+import io.ktor.http.HttpStatusCode
 import kotlinx.datetime.Clock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.koin.core.logger.Logger
+import platform.Crypto
 import kotlin.time.Duration.Companion.minutes
 
 internal class AuthTokenRequests(
-    client: HttpClient,
-    private val crypto: Any,
-    baseUrl: String,
-    private val configuration: ServiceAccountApiConfiguration,
-    private val cache: Cache,
+  client: HttpClient,
+  private val crypto: Crypto,
+  baseUrl: String,
+  private val configuration: ServiceAccountApiConfiguration,
+  private val cache: Cache,
 ) : Requests(
-    client,
-    baseUrl,
+  client,
+  baseUrl,
 ) {
-//    private fun getUrlEncodedJsonRequest(): Request {
-//        val body = buildJsonObject {
-//            put("assertion", getJwt(configuration, crypto))
-//        }
-//
-//        val newBody = Json.encodeToString(body).toRequestBody("application/json".toMediaType())
-//
-//        val request = Request.Builder()
-//            .url("$baseUrl/auth_tokens")
-//            .header("Content-Type", "application/json")
-//            .post(newBody)
-//            .build()
-//
-//        return request
-//    }
-
-    suspend fun getAuthToken(): Response<AuthToken> {
-        return Response(AuthToken("token", Clock.System.now().minus(5.minutes), Clock.System.now().plus(5.minutes)))
-//        val cachedToken = cache.authToken
-//        if (cachedToken != null) return Response(cachedToken)
-//
-//        val request = getUrlEncodedJsonRequest()
-//
-//        printRequest(request)
-//        val call = client.newCall(request)
-//
-//        val response = call.await()
-//        val responseBody = printResponse(response)
-//
-//        return try {
-//            if (response.code == HttpURLConnection.HTTP_CREATED) {
-//                cache.authToken = Json.decodeFromString(responseBody)
-//                Response(cache.authToken)
-//            } else {
-//                parseError(responseBody)
-//            }
-//        } catch (e: java.lang.Exception) {
-//            val detail = e.message.toString()
-//            Response(null, genericError(detail))
-//        }
+  private suspend fun sendAuthTokenRequest(): HttpResponse {
+    val body = buildJsonObject {
+      put("assertion", getJwt(configuration, crypto))
     }
+
+    val headers = mapOf(
+      contentType.first to contentType.second
+    )
+
+    println("body: $body")
+
+    val response = client.post("$baseUrl/auth_tokens") {
+      headers.forEach { (key, value) -> header(key, value) }
+      setBody(body.toString())
+    }
+
+    return response
+  }
+
+  suspend fun getAuthToken(): Response<AuthToken> {
+    val cachedToken = cache.authToken
+    if (cachedToken != null) return Response(cachedToken)
+
+    val response = sendAuthTokenRequest()
+
+    return try {
+      if (response.status == HttpStatusCode.Created) {
+        val authToken = Json.decodeFromString<AuthToken>(response.bodyAsText())
+        cache.authToken = authToken
+        Response(cache.authToken)
+      } else {
+        parseError(response.bodyAsText())
+      }
+    } catch (e: Exception) {
+      val detail = e.message.toString()
+      Response(null, genericError(detail))
+    }
+  }
 }
