@@ -27,6 +27,7 @@ import com.highmobility.hmkitfleet.ServiceAccountApiConfiguration
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequest
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -50,7 +51,7 @@ internal open class Requests(
 
   val json by lazy { Json { prettyPrint = true } }
 
-  inline fun <T> tryParseResponse(
+  suspend inline fun <T> tryParseResponse(
     response: HttpResponse,
     expectedResponseCode: Int,
     block: (body: String) -> (Response<T>)
@@ -90,8 +91,8 @@ internal open class Requests(
     )
   }
 
-  fun printResponse(response: HttpResponse): String {
-    return "TODO"
+  suspend fun printResponse(response: HttpResponse): String {
+    return response.bodyAsText()
 //        val body = response.body?.string()
 //        logger.debug("${response.request.url} response:\n${response.code}: $body")
 //        return body!!
