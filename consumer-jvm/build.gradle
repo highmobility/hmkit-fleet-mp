@@ -15,3 +15,8 @@ java {
 dependencies {
     implementation project(":hmkit-fleet")
 }
+
+// required for implementation project(":hmkit-fleet")
+tasks.register("prepareKotlinIdeaImport"){}
+tasks.register("prepareKotlinBuildScriptModel"){}
+

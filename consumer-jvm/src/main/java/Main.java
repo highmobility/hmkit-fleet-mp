@@ -22,6 +22,6 @@ class Main {
 
     Response<EligibilityStatus> response = hmkit.getEligibility("1HMGT3T163YC5RS2D", Brand.SANDBOX).get();
 
-    // works
+    System.out.println("response " + response.getResponse());
   }
 }

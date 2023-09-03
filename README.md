@@ -1,19 +1,17 @@
 <!-- TOC -->
-
-* [Current status](#current-status)
-* [build/run java/js targets](#buildrun-javajs-targets)
+  * [Current status](#current-status)
+  * [build/run java/js targets](#buildrun-javajs-targets)
     * [run js](#run-js)
     * [run jvm](#run-jvm)
     * [native](#native)
-* [positives](#positives)
-* [negatives](#negatives)
-* [debugging crashes](#debugging-crashes)
+  * [positives](#positives)
+  * [negatives](#negatives)
+  * [debugging crashes](#debugging-crashes)
     * [js stack trace](#js-stack-trace)
     * [js debugger](#js-debugger)
     * [java stack trace](#java-stack-trace)
     * [java debugging](#java-debugging)
     * [issues](#issues)
-
 <!-- TOC -->
 
 ## Current status
@@ -122,7 +120,9 @@ TODO: verify. also verify package is correct (for spring targets that require a 
 
 ### java debugging
 
-TODO: fix debugging. Try to share the jvm lib and verify can debug like before.
+With implementation project(""), the debugging works normally.
+
+TODO: Share the jvm lib and verify can debug with shared library as well.
 
 ### issues
 
