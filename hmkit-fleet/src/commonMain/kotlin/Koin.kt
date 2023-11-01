@@ -39,17 +39,20 @@ import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import platform.Crypto
+import platform.createLogger
 
 //import org.slf4j.LoggerFactory
 
 internal class Koin(
-  configuration: String,
+  configurationString: String,
   environment: Environment,
   sharedConfiguration: SharedConfiguration
 ) {
   private val koinModules = module {
-    val configuration = ServiceAccountApiConfiguration(configuration)
-//        single { LoggerFactory.getLogger(HMKitFleet::class.java) }
+    val configuration = ServiceAccountApiConfiguration(configurationString)
+
+    single { createLogger() }
+
     single { sharedConfiguration.client }
     single { environment }
     single { Crypto() }

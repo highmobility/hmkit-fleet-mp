@@ -32,7 +32,7 @@ class Main {
 
     Response<EligibilityStatus> response = hmkit.getEligibility("1HMGT3T163YC5RS2D", Brand.SANDBOX).get();
 
-    System.out.println("response " + response.getResponse());
+    System.out.println("consumer: response " + response.getResponse());
   }
 
   static HMKitConfiguration.Builder addCustomOkHttpClient(HMKitConfiguration.Builder builder) {

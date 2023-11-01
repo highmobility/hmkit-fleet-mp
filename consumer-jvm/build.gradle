@@ -14,9 +14,9 @@ java {
 
 dependencies {
     implementation project(":hmkit-fleet")
+    implementation "ch.qos.logback:logback-classic:1.4.11"
 }
 
 // required for implementation project(":hmkit-fleet")
-tasks.register("prepareKotlinIdeaImport"){}
-tasks.register("prepareKotlinBuildScriptModel"){}
-
+tasks.register("prepareKotlinIdeaImport") {}
+tasks.register("prepareKotlinBuildScriptModel") {}

@@ -1,17 +1,19 @@
 <!-- TOC -->
-  * [Current status](#current-status)
-  * [build/run java/js targets](#buildrun-javajs-targets)
+
+* [Current status](#current-status)
+* [build/run java/js targets](#buildrun-javajs-targets)
     * [run js](#run-js)
     * [run jvm](#run-jvm)
     * [native](#native)
-  * [positives](#positives)
-  * [negatives](#negatives)
-  * [debugging crashes](#debugging-crashes)
+* [positives](#positives)
+* [negatives](#negatives)
+* [debugging crashes](#debugging-crashes)
     * [js stack trace](#js-stack-trace)
     * [js debugger](#js-debugger)
     * [java stack trace](#java-stack-trace)
     * [java debugging](#java-debugging)
     * [issues](#issues)
+
 <!-- TOC -->
 
 ## Current status
@@ -85,6 +87,11 @@ check out generated types in [docs](./docs/hmkit-fleet-hmkit-fleet.d.ts)
 - need separate HMKitFleet classes for js and jvm. It's because Js has Promise return type and Java
   has CompletableFuture. These return types cannot be mixed in Kotlin
 
+### JVM negatives
+
+adds new dependencies:
+- ktor. With native jvm, only OkHttp was used.
+
 ## debugging crashes
 
 ### js stack trace
@@ -116,7 +123,7 @@ The mjs source code for this is not clean, but it is kind of readable
 
 The java compiled version looks exactly like the current one. I think there won't be any difference for the clients.
 
-- verified 
+- verified
 - package is correct (for spring targets that require a package)
 
 ### java debugging
@@ -129,4 +136,5 @@ I tested it with releasing to sonatype and debugging in a sample app
 
 Currently, cannot get both building and types working in js. I don't know how to map .mjs with types in vscode.
 
-I think Js target can be set to experimental, and can be used by customers to quickly verify their use case. If it works, then they can use the js target.
+I think Js target can be set to experimental, and can be used by customers to quickly verify their use case. If it
+works, then they can use the js target.

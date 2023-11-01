@@ -153,7 +153,7 @@ __metadata:
 
 "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet::locator=hmkit-fleet-consumer-js%40workspace%3A.":
   version: 0.0.0
-  resolution: "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet#../build/js/packages/hmkit-fleet-mp-hmkit-fleet::hash=e4a3b3&locator=hmkit-fleet-consumer-js%40workspace%3A."
+  resolution: "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet#../build/js/packages/hmkit-fleet-mp-hmkit-fleet::hash=0e4045&locator=hmkit-fleet-consumer-js%40workspace%3A."
   dependencies:
     "@js-joda/core": 3.2.0
     abort-controller: 3.0.0
@@ -162,7 +162,7 @@ __metadata:
     node-fetch: 2.6.7
     uuid: 9.0.1
     ws: 8.5.0
-  checksum: a5268cff25c1d1451a7a96c5c56daa848a0f753a1f158702a5233b780de43fc381a34824041ea930207d2f30e221ed126d8dd1fc3a649f12da5171c8ad5474be
+  checksum: 4277dda6ccde79144078c0342e5e911e1273ebdb7423fe0054f4c815b2eb39623c54692417c087ba38c8a1f985825cfd92c59ff458cba7a7beec4d91a93ce7cf
   languageName: node
   linkType: hard
 

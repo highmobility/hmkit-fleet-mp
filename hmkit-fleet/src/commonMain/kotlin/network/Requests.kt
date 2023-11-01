@@ -29,8 +29,10 @@ import io.ktor.client.request.HttpRequest
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.utils.io.core.toByteArray
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -38,15 +40,15 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import platform.Crypto
 import platform.KotlinPlatform
+import platform.Logger
 import platform.currentPlatform
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 internal open class Requests(
   val client: HttpClient,
-  val baseUrl: String,
+  val baseUrl: String
 ) {
-  val mediaType = "application/json; charset=utf-8"
   val contentType = Pair("Content-Type", "application/json")
 
   val json by lazy { Json { prettyPrint = true } }
@@ -56,7 +58,7 @@ internal open class Requests(
     expectedResponseCode: Int,
     block: (body: String) -> (Response<T>)
   ): Response<T> {
-    val responseBody = printResponse(response)
+    val responseBody = response.bodyAsText()
 
     return try {
       if (response.status.value == expectedResponseCode) {
@@ -68,34 +70,6 @@ internal open class Requests(
       val detail = e.message.toString()
       Response(null, genericError(detail))
     }
-  }
-
-  fun printRequest(request: HttpRequest) {
-    val format = Json { prettyPrint = true }
-
-    // TODO
-    // parse into json, so can log it out with pretty print
-//        val body = request.bodyAsString()
-//        val body = request.body().toString()
-//        var bodyInPrettyPrint = ""
-//        if (!body.isNullOrBlank()) {
-//            val jsonElement = format.decodeFromString<JsonElement>(body)
-//            bodyInPrettyPrint = format.encodeToString(jsonElement)
-//        }
-
-    // TODO: use logger abstraction
-    println(
-      "sending ${request.method} ${request.url}:" +
-        "\nheaders: ${request.headers}" +
-        "body: ${"TODO"}bodyInPrettyPrint"
-    )
-  }
-
-  suspend fun printResponse(response: HttpResponse): String {
-    return response.bodyAsText()
-//        val body = response.body?.string()
-//        logger.debug("${response.request.url} response:\n${response.code}: $body")
-//        return body!!
   }
 
   fun <T> parseError(responseBody: String): Response<T> {
@@ -124,16 +98,6 @@ internal open class Requests(
     }
 
     return Response(null, genericError("Unknown server response"))
-  }
-
-  internal fun requestBody(values: Map<String, String>): String {
-    val completeBody = buildJsonObject {
-      for (item in values) {
-        put(item.key, item.value)
-      }
-    }
-
-    return completeBody.toString()
   }
 
   @OptIn(ExperimentalEncodingApi::class)

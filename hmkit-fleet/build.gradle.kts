@@ -57,6 +57,9 @@ kotlin {
       }
     }
     val commonTest by getting {
+      dependencies {
+
+      }
     }
     val jvmMain by getting {
       dependencies {
@@ -64,11 +67,22 @@ kotlin {
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${extra["coroutinesVersion"]}")
         api("io.ktor:ktor-client-okhttp:${extra["ktor_version"]}")
         implementation("com.high-mobility:hmkit-crypto-telematics:0.1")
-        implementation("ch.qos.logback:logback-classic:1.2.3")
+
       }
     }
     val jvmTest by getting {
+      dependencies {
+        //        testImplementation deps.autoApi
+        implementation("io.insert-koin:koin-test:${extra["koinVersion"]}")
 
+        implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+//        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${extra["coroutinesVersion"]}")
+
+        implementation("org.slf4j:slf4j-simple:1.7.36")
+        implementation("io.mockk:mockk:1.12.5")
+      }
     }
     val jsMain by getting {
       dependencies {

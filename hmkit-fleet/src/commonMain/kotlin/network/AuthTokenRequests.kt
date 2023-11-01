@@ -61,8 +61,6 @@ internal class AuthTokenRequests(
       contentType.first to contentType.second
     )
 
-    println("body: $body")
-
     val response = client.post("$baseUrl/auth_tokens") {
       headers.forEach { (key, value) -> header(key, value) }
       setBody(body.toString())

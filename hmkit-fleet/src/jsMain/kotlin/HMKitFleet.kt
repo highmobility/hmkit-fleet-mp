@@ -42,7 +42,7 @@ class HMKitFleet constructor(
    * @return The eligibility status
    */
   fun getEligibility(vin: String, brand: Brand): Any = scope.promise {
-    println("get js eligibility $vin $brand")
+    koin.logger.debug("get js eligibility $vin $brand")
     koin.get<UtilityRequests>().getEligibility(vin, brand)
   }
 }
