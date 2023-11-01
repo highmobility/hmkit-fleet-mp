@@ -152,16 +152,17 @@ __metadata:
   linkType: soft
 
 "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet::locator=hmkit-fleet-consumer-js%40workspace%3A.":
-  version: 1.0.0-SNAPSHOT
-  resolution: "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet#../build/js/packages/hmkit-fleet-mp-hmkit-fleet::hash=dacda1&locator=hmkit-fleet-consumer-js%40workspace%3A."
+  version: 0.0.0
+  resolution: "hmkit-fleet@file:../build/js/packages/hmkit-fleet-mp-hmkit-fleet#../build/js/packages/hmkit-fleet-mp-hmkit-fleet::hash=e4a3b3&locator=hmkit-fleet-consumer-js%40workspace%3A."
   dependencies:
     "@js-joda/core": 3.2.0
     abort-controller: 3.0.0
     format-util: ^1.0.5
     jsrsasign: 10.8.6
     node-fetch: 2.6.7
+    uuid: 9.0.1
     ws: 8.5.0
-  checksum: 59f4efb529dfcf5e44b77b9882638896e1f9595b50a6adb263eb6658e14b4686c91cc2361ee99c1445e961ee14be9fe8f564935626c1ab7afbf9e9dda97785cc
+  checksum: a5268cff25c1d1451a7a96c5c56daa848a0f753a1f158702a5233b780de43fc381a34824041ea930207d2f30e221ed126d8dd1fc3a649f12da5171c8ad5474be
   languageName: node
   linkType: hard
 
@@ -255,6 +256,15 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: f53bfe97f7c8b2b6d23cf572750d4e7d1e0c5fff1c36d859d0ec84556a827b8785077bc27676bf7e71fae538e517c3ecc0f37e7f593be913d884805d931bc8be
+  languageName: node
+  linkType: hard
+
+"uuid@npm:9.0.1":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 39931f6da74e307f51c0fb463dc2462807531dc80760a9bff1e35af4316131b4fc3203d16da60ae33f07fdca5b56f3f1dd662da0c99fea9aaeab2004780cc5f4
   languageName: node
   linkType: hard
 

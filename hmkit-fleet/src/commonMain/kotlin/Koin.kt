@@ -45,12 +45,12 @@ import platform.Crypto
 internal class Koin(
   configuration: String,
   environment: Environment,
-  hmKitConfiguration: HMKitConfiguration = HMKitConfiguration.defaultConfiguration()
+  sharedConfiguration: SharedConfiguration
 ) {
   private val koinModules = module {
     val configuration = ServiceAccountApiConfiguration(configuration)
 //        single { LoggerFactory.getLogger(HMKitFleet::class.java) }
-    single { hmKitConfiguration.client }
+    single { sharedConfiguration.client }
     single { environment }
     single { Crypto() }
     single { Requests(get(), environment.url) }

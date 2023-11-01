@@ -2,7 +2,8 @@ package platform
 
 actual class Crypto {
   /**
-   * @param jwt the jwt with two parts separated by dots. not base64 encode
+   * @param header the header part of the jwt
+   * @param payload the payload part of the jwt
    * @param privateKey the "private_key" value from the downloaded service account json file.
    *  Starts with -----BEGIN PRIVATE KEY
    *
@@ -14,7 +15,7 @@ actual class Crypto {
     val bodyJSON = JSON.parse<dynamic>(payload)
 
     val jwt = jsrsasign.KJUR.jws.JWS.sign(alg, headerJSON, bodyJSON, privateKey)
-    return jwt
+    return jwt as String
   }
 
   actual fun signJWTJvm(jwt: String, privateKey: String): ByteArray {
@@ -25,9 +26,7 @@ actual class Crypto {
 fun String.decodeHex(): ByteArray {
   check(length % 2 == 0) { "Must have an even length" }
 
-  return chunked(2)
-    .map { it.toInt(16).toByte() }
-    .toByteArray()
+  return chunked(2).map { it.toInt(16).toByte() }.toByteArray()
 }
 
 @JsModule("jsrsasign")

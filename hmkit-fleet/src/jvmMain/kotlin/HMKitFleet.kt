@@ -20,7 +20,6 @@ import java.util.concurrent.CompletableFuture
  * );
  * ```
  */
-
 class HMKitFleet @JvmOverloads constructor(
   configuration: String,
   environment: Environment,

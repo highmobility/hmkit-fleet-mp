@@ -1,20 +1,13 @@
 package platform
 
-import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
-import io.ktor.client.engine.js.Js
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
+actual val currentPlatform = KotlinPlatform.JS
 
-actual fun httpClient(config: HttpClientConfig<*>.() -> Unit): HttpClient = HttpClient(Js) {
-  config(this)
-  install(Logging) {
-    level = LogLevel.ALL
-  }
-
-  engine {
-
-  }
+actual fun uuid(): String {
+    return uuid.v4()
 }
 
-actual val currentPlatform = KotlinPlatform.JS
+@JsModule("uuid")
+@JsNonModule
+external object uuid {
+    fun v4(): String
+}

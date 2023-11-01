@@ -23,13 +23,13 @@
  */
 package com.highmobility.hmkitfleet
 
-import com.benasher44.uuid.uuid4
 import kotlinx.datetime.Clock
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import platform.uuid
 
 /**
  * Decode the service account private key from JSON.
@@ -52,7 +52,7 @@ class ServiceAccountApiConfiguration {
 
   val version = 2
 
-  internal fun createJti() = uuid4().toString()
+  internal fun createJti() = uuid()
   internal fun createIat() = Clock.System.now().epochSeconds
 
   fun toJsonString(): String {

@@ -4,7 +4,6 @@ buildscript {
     set("coroutinesVersion", "1.7.3")
     set("koinVersion", "3.4.3")
     set("ktor_version", "2.3.3")
-    set("depLocation", 0)
   }
 }
 
@@ -47,7 +46,7 @@ kotlin {
     val commonMain by getting {
       dependencies {
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${extra["coroutinesVersion"]}")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0-RC")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
         implementation("io.insert-koin:koin-core:${extra["koinVersion"]}")
         implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
@@ -75,6 +74,7 @@ kotlin {
       dependencies {
         implementation("io.ktor:ktor-client-js:${extra["ktor_version"]}")
         implementation(npm("jsrsasign", "10.8.6"))
+        implementation(npm("uuid", "9.0.1"))
       }
     }
     val jsTest by getting {

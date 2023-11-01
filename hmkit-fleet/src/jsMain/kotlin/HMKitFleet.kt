@@ -1,5 +1,5 @@
 @file:OptIn(ExperimentalJsExport::class)
-@file:JsExport()
+@file:JsExport
 
 package com.highmobility.hmkitfleet
 
@@ -27,9 +27,10 @@ import platform.Crypto
  */
 class HMKitFleet constructor(
   configuration: String,
-  environment: Environment
+  environment: Environment,
+  hmKitConfiguration: HMKitConfiguration = HMKitConfiguration.defaultConfiguration()
 ) {
-  private val koin = Koin(configuration, environment).start()
+  private val koin = Koin(configuration, environment, hmKitConfiguration).start()
   private val scope = koin.get<CoroutineScope>()
 
   /**
