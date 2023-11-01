@@ -116,14 +116,17 @@ The mjs source code for this is not clean, but it is kind of readable
 
 The java compiled version looks exactly like the current one. I think there won't be any difference for the clients.
 
-TODO: verify. also verify package is correct (for spring targets that require a package)
+- verified 
+- package is correct (for spring targets that require a package)
 
 ### java debugging
 
-With implementation project(""), the debugging works normally.
+With implementation project(""), the debugging works normally
 
-TODO: Share the jvm lib and verify can debug with shared library as well.
+I tested it with releasing to sonatype and debugging in a sample app
 
 ### issues
 
-currently cannot get both building and types working in js. I don't know how to map .mjs with types in vscode.
+Currently, cannot get both building and types working in js. I don't know how to map .mjs with types in vscode.
+
+I think Js target can be set to experimental, and can be used by customers to quickly verify their use case. If it works, then they can use the js target.
