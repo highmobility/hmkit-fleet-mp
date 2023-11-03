@@ -11,14 +11,8 @@ import com.highmobility.hmkitfleet.model.RequestClearanceResponse
 import com.highmobility.hmkitfleet.network.Response
 import com.highmobility.hmkitfleet.network.UtilityRequests
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.promise
-import kotlinx.serialization.json.Json.Default.configuration
-import platform.Crypto
 import kotlin.js.Promise
-import kotlin.jvm.JvmOverloads
 
 /**
  * HMKitFleet is the access point for the Fleet SDK functionality. It is accessed by
