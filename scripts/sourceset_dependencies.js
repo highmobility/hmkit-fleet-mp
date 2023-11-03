@@ -1,0 +1,1 @@
+sourceset_dependencies='{":hmkit-fleet:dokkaHtml/commonMain":[],":hmkit-fleet:dokkaHtml/jsMain":[":hmkit-fleet:dokkaHtml/commonMain"],":hmkit-fleet:dokkaHtml/jvmMain":[":hmkit-fleet:dokkaHtml/commonMain"]}'
