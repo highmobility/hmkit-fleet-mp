@@ -1,8 +1,11 @@
 package com.highmobility.hmkitfleet
 
 import com.highmobility.hmkitfleet.model.Brand
+import com.highmobility.hmkitfleet.model.ClearanceStatus
+import com.highmobility.hmkitfleet.model.ControlMeasure
 import com.highmobility.hmkitfleet.model.EligibilityStatus
 import com.highmobility.hmkitfleet.model.Environment
+import com.highmobility.hmkitfleet.model.RequestClearanceResponse
 import com.highmobility.hmkitfleet.network.Response
 import com.highmobility.hmkitfleet.network.UtilityRequests
 import kotlinx.coroutines.CoroutineScope
@@ -38,5 +41,64 @@ class HMKitFleet @JvmOverloads constructor(
    */
   fun getEligibility(vin: String, brand: Brand): CompletableFuture<Response<EligibilityStatus>> = scope.future {
     koin.get<UtilityRequests>().getEligibility(vin, brand)
+  }
+
+  /**
+   * Start the data access clearance process for a vehicle.
+   *
+   * @param vin The vehicle VIN number
+   * @param brand The vehicle brand
+   * @param controlMeasures Optional control measures for some vehicle brands.
+   * @return The clearance status
+   */
+  @JvmOverloads
+  fun requestClearance(
+    vin: String,
+    brand: Brand,
+    controlMeasures: List<ControlMeasure>? = null
+  ): CompletableFuture<Response<RequestClearanceResponse>> = scope.future {
+    TODO("")
+  }
+
+  /**
+   * Get the status of VINs that have previously been registered for data access clearance with
+   * [requestClearance]. After VIN is Approved, [getVehicleAccess] and subsequent [sendCommand]
+   * can be sent.
+   *
+   * @return The clearance statuses
+   */
+  fun getClearanceStatuses(): CompletableFuture<Response<List<ClearanceStatus>>> = scope.future {
+    TODO("")
+  }
+
+  /**
+   * Get the status of a [vin] that has previously been registered for data access clearance with
+   * [requestClearance]. After the [vin] is Approved, [getVehicleAccess] and subsequent [sendCommand]
+   * can be sent.
+   *
+   * @return The clearance status
+   */
+  fun getClearanceStatus(vin: String): CompletableFuture<Response<ClearanceStatus>> = scope.future {
+    TODO("")
+  }
+
+  /**
+   * Delete the clearance for the given VIN.
+   *
+   * If the clearance is in a pending state, the activation process is canceled.
+   * If the vehicle is in an approved state, a revoke is attempted. If the revoke is successful,
+   * the [VehicleAccess] object for this VIN becomes invalid.
+   *
+   * @param vin The vehicle VIN number
+   * @return The clearance status
+   */
+  fun deleteClearance(vin: String) = scope.future {
+    TODO("")
+  }
+
+  fun getVehicleState(
+    vin: String
+  ): CompletableFuture<Response<String>> = scope.future {
+    TODO("")
   }
 }
